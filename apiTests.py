@@ -2,13 +2,13 @@ import requests
 import json
 
 # Define the API URL and the model
-url = 'http://ip.address/api/generate'
+url = 'http://your.url:11434/api/generate'
 headers = {'Content-Type': 'application/json'}
 
 # Correct path to your text file
-txt_file_path = 'file/path.txt'  # Update this path
+txt_file_path = 'inputs/networkTest.txt'  # Update this path
 
-# Read the content of the .txt file
+# Read the content of the file
 try:
     with open(txt_file_path, 'r') as file:
         text = file.read()
@@ -25,17 +25,20 @@ def generate_qa_pairs(text):
         "prompt": prompt,
         "stream": False  # Set stream to False
     }
-
+    
+    print("Phase 0: Sending request to API...")
     # Make the POST request
     try:
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
         # Raw response for debugging
-        print("Raw response content:", response.text)
+        print("Raw response content: ", response.text)
         
         # If the request is successful and the response is JSON
         if response.status_code == 200:
             try:
+
+                print("Phase 1: ")
                 response_data = json.loads(response.json().get("response", "{}"))
                 
                 jsonl_data = ""
